@@ -7,6 +7,7 @@ import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import HomePage from './components/HomePage';
 import Scoreboard from './components/Scoreboard';
+import PageScoreboardPage from './components/PageScoreboardPage';
 import PersonalMetrics from './components/PersonalMetrics';
 import LinkUpload from './components/LinkUpload';
 import AdminDashboard from './components/dashboard/AdminDashboard';
@@ -36,6 +37,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Scoreboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/page-scoreboard"
+              element={
+                <ProtectedRoute>
+                  <PageScoreboardPage />
                 </ProtectedRoute>
               }
             />

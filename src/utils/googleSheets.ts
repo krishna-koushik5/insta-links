@@ -26,7 +26,7 @@ class GoogleSheetsService {
             console.log('Environment check - REACT_APP_GOOGLE_SHEETS_ID:', process.env.REACT_APP_GOOGLE_SHEETS_ID);
             console.log('Environment check - REACT_APP_GOOGLE_SHEETS_API_KEY:', process.env.REACT_APP_GOOGLE_SHEETS_API_KEY ? 'Present' : 'Missing');
 
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${this.spreadsheetId}/values/USER1!A:E?key=${this.apiKey}`;
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${this.spreadsheetId}/values/USER1!A:F?key=${this.apiKey}`;
 
             console.log('Making request to URL:', url);
             const response = await fetch(url);
@@ -50,11 +50,11 @@ class GoogleSheetsService {
             }
 
             // Skip header row and convert to InstagramPost objects
-            // Your sheet structure: A=USER_ID, B=INSTAGRAM_URL, C=Views, D=Likes, E=comment_count
+            // Your sheet structure: A=USER_ID, B=INSTAGRAM_URL, C=Views, D=Likes, E=comment_count, F=Page's name
             const posts: InstagramPost[] = rows.slice(1).map((row: any[]) => ({
                 user_id: row[0] || '', // USER_ID (email address)
                 url: row[1] || '', // INSTAGRAM_URL
-                title: '', // No title in your sheet
+                title: row[5] || '', // Column F = Page's name
                 description: '', // No description in your sheet
                 likes: parseInt(row[3]) || 0, // Column D = Likes
                 views: parseInt(row[2]) || 0, // Column C = Views

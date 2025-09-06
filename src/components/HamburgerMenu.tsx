@@ -5,7 +5,8 @@ import {
     X,
     BarChart3,
     Home,
-    LogOut
+    LogOut,
+    Trophy
 } from 'lucide-react';
 
 interface HamburgerMenuProps {
@@ -83,6 +84,14 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
                             >
                                 <BarChart3 className="w-4 h-4 mr-3" />
                                 <span className="font-medium text-sm">Personal Metrics</span>
+                            </button>
+
+                            <button
+                                onClick={() => handleNavigation('/page-scoreboard')}
+                                className="w-full flex items-center px-4 py-3 text-left text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                            >
+                                <Trophy className="w-4 h-4 mr-3" />
+                                <span className="font-medium text-sm">Page's Scoreboard</span>
                             </button>
                         </nav>
                     </div>

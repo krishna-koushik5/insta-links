@@ -72,6 +72,11 @@ const HomePage: React.FC = () => {
             return;
         }
 
+        if (!title.trim()) {
+            setMessage({ type: 'error', text: 'Please enter a page name' });
+            return;
+        }
+
         if (!validateUrl(link)) {
             setMessage({ type: 'error', text: 'Please enter a valid URL' });
             return;
@@ -199,12 +204,13 @@ const HomePage: React.FC = () => {
                                         )}
                                     </div>
 
-                                    {/* Title Input */}
+                                    {/* Page's Name Input */}
                                     <input
                                         type="text"
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
-                                        placeholder="Title (optional)"
+                                        placeholder="Page's name *"
+                                        required
                                         className="w-full py-4 px-4 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
                                         disabled={isUploading}
                                     />
@@ -213,7 +219,7 @@ const HomePage: React.FC = () => {
                                 <div className="flex space-x-3">
                                     <button
                                         type="submit"
-                                        disabled={isUploading || !link.trim()}
+                                        disabled={isUploading || !link.trim() || !title.trim()}
                                         className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium py-4 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center text-lg"
                                     >
                                         {isUploading ? (

@@ -32,6 +32,11 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUploadSuccess }) => {
             return;
         }
 
+        if (!title.trim()) {
+            setMessage({ type: 'error', text: 'Please enter a page name' });
+            return;
+        }
+
         if (!validateUrl(link)) {
             setMessage({ type: 'error', text: 'Please enter a valid URL' });
             return;
@@ -115,12 +120,13 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUploadSuccess }) => {
                         )}
                     </div>
 
-                    {/* Title Input */}
+                    {/* Page's Name Input */}
                     <input
                         type="text"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Title (optional)"
+                        placeholder="Page's name *"
+                        required
                         className="w-full py-3 px-4 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-instagram-500 focus:border-transparent"
                         disabled={isUploading}
                     />
@@ -129,7 +135,7 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUploadSuccess }) => {
                 <div className="flex space-x-3">
                     <button
                         type="submit"
-                        disabled={isUploading || !link.trim()}
+                        disabled={isUploading || !link.trim() || !title.trim()}
                         className="flex-1 bg-instagram-500 hover:bg-instagram-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
                     >
                         {isUploading ? (
