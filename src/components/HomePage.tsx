@@ -96,7 +96,7 @@ const HomePage: React.FC = () => {
                 updated_at: serverTimestamp()
             };
 
-            const docRef = await addDoc(collection(db, 'user_links'), linkData);
+            await addDoc(collection(db, 'user_links'), linkData);
             setMessage({ type: 'success', text: 'Link uploaded successfully!' });
 
             // Clear form
@@ -172,7 +172,7 @@ const HomePage: React.FC = () => {
                                 </h3>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="space-y-6" role="form">
+                            <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="space-y-6">
                                     {/* Link URL Input */}
                                     <div className="relative">

@@ -56,7 +56,7 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUploadSuccess }) => {
                 updated_at: serverTimestamp()
             };
 
-            const docRef = await addDoc(collection(db, 'user_links'), linkData);
+            await addDoc(collection(db, 'user_links'), linkData);
 
             // Clear success message after 3 seconds
             setTimeout(() => {
@@ -88,7 +88,7 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUploadSuccess }) => {
                 </h3>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4" role="form">
+            <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-4">
                     {/* Link URL Input */}
                     <div className="relative">
