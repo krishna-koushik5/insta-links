@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { BarChart3, Heart, Eye, MessageCircle, TrendingUp, Calendar, Plus, Trophy } from 'lucide-react';
+import { BarChart3, Heart, Eye, MessageCircle, TrendingUp, Calendar, Plus, Trophy, Menu } from 'lucide-react';
 import createGoogleSheetsService from '../utils/googleSheets';
 import HomeButton from './HomeButton';
+import HamburgerMenu from './HamburgerMenu';
 
 interface InstagramPost {
     user_id: string;
@@ -47,6 +48,7 @@ const PersonalMetrics: React.FC = () => {
     const [metrics, setMetrics] = useState<UserMetrics | null>(null);
     const [loading, setLoading] = useState(true);
     const [addingSampleData, setAddingSampleData] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const fetchPersonalMetrics = useCallback(async () => {
         try {
@@ -229,256 +231,268 @@ const PersonalMetrics: React.FC = () => {
         });
     };
 
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-black text-white flex items-center justify-center">
-                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
-            </div>
-        );
-    }
-
     return (
         <div className="min-h-screen bg-black text-white">
-            {/* Home Button */}
-            <HomeButton />
+            {/* Hamburger Menu Button - Fixed Position */}
+            <button
+                onClick={() => setIsMenuOpen(true)}
+                className="fixed top-4 left-16 z-30 p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 bg-gray-900/80 backdrop-blur-sm"
+            >
+                <Menu className="h-6 w-6" />
+            </button>
 
-            {/* Header */}
-            <div className="bg-gray-900 border-b border-gray-800">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-6">
-                        <div>
-                            <h1 className="text-3xl font-bold text-white">Personal Metrics</h1>
-                            <p className="text-gray-300 mt-2">Track your Instagram performance</p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                                <span className="text-white text-sm font-medium">
-                                    {currentUser?.email?.charAt(0).toUpperCase() || 'U'}
-                                </span>
+            {loading ? (
+                <div className="min-h-screen bg-black text-white flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+                </div>
+            ) : (
+                <>
+                    {/* Home Button */}
+                    <HomeButton />
+
+                    {/* Header */}
+                    <div className="bg-gray-900 border-b border-gray-800">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex justify-between items-center py-6">
+                                <div>
+                                    <h1 className="text-3xl font-bold text-white">Personal Metrics</h1>
+                                    <p className="text-gray-300 mt-2">Track your Instagram performance</p>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                                        <span className="text-white text-sm font-medium">
+                                            {currentUser?.email?.charAt(0).toUpperCase() || 'U'}
+                                        </span>
+                                    </div>
+                                    <span className="text-gray-300 font-medium">
+                                        {currentUser?.email || 'user@gmail.com'}
+                                    </span>
+                                </div>
                             </div>
-                            <span className="text-gray-300 font-medium">
-                                {currentUser?.email || 'user@gmail.com'}
-                            </span>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            {/* Position Display */}
-            {metrics && (
-                <div className="bg-gradient-to-r from-yellow-600 to-orange-600 mx-4 mt-4 rounded-lg p-4">
-                    <div className="flex items-center justify-center space-x-3">
-                        <Trophy className="w-6 h-6 text-white" />
-                        <div className="text-center">
-                            <p className="text-white font-bold text-lg">
-                                #{metrics.position} of {metrics.totalUsers} users
-                            </p>
-                            <p className="text-yellow-100 text-sm">
-                                Ranked by total views
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Main Content */}
-            <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                {metrics ? (
-                    <>
-                        {/* Overview Cards - Calculated from Google Sheets */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-gray-400 text-sm font-medium">Total Posts</p>
-                                        <p className="text-2xl font-bold text-white">{metrics.totalPosts}</p>
-                                        <p className="text-xs text-gray-500 mt-1">From Google Sheets</p>
-                                    </div>
-                                    <BarChart3 className="w-8 h-8 text-blue-400" />
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-gray-400 text-sm font-medium">Total Likes</p>
-                                        <p className="text-2xl font-bold text-red-400">{formatNumber(metrics.totalLikes)}</p>
-                                        <p className="text-xs text-gray-500 mt-1">Calculated from sheets</p>
-                                    </div>
-                                    <Heart className="w-8 h-8 text-red-400" />
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-gray-400 text-sm font-medium">Total Views</p>
-                                        <p className="text-2xl font-bold text-blue-400">{formatNumber(metrics.totalViews)}</p>
-                                        <p className="text-xs text-gray-500 mt-1">Sum of all views</p>
-                                    </div>
-                                    <Eye className="w-8 h-8 text-blue-400" />
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-gray-400 text-sm font-medium">Total Comments</p>
-                                        <p className="text-2xl font-bold text-green-400">{formatNumber(metrics.totalComments)}</p>
-                                        <p className="text-xs text-gray-500 mt-1">Sum of all comments</p>
-                                    </div>
-                                    <MessageCircle className="w-8 h-8 text-green-400" />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Average Performance */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-white">Average Likes</h3>
-                                    <TrendingUp className="w-5 h-5 text-red-400" />
-                                </div>
-                                <p className="text-3xl font-bold text-red-400">{formatNumber(metrics.averageLikes)}</p>
-                                <p className="text-sm text-gray-400 mt-2">per post</p>
-                            </div>
-
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-white">Average Views</h3>
-                                    <TrendingUp className="w-5 h-5 text-blue-400" />
-                                </div>
-                                <p className="text-3xl font-bold text-blue-400">{formatNumber(metrics.averageViews)}</p>
-                                <p className="text-sm text-gray-400 mt-2">per post</p>
-                            </div>
-
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-white">Average Comments</h3>
-                                    <TrendingUp className="w-5 h-5 text-green-400" />
-                                </div>
-                                <p className="text-3xl font-bold text-green-400">{formatNumber(metrics.averageComments)}</p>
-                                <p className="text-sm text-gray-400 mt-2">per post</p>
-                            </div>
-                        </div>
-
-                        {/* Recent Posts */}
-                        <div className="bg-gray-800 rounded-lg p-6">
-                            <h3 className="text-xl font-semibold text-white mb-6">Recent Posts</h3>
-
-                            {metrics.recentPosts.length > 0 ? (
-                                <div className="space-y-4">
-                                    {metrics.recentPosts.map((post, index) => (
-                                        <div key={`${post.user_id}-${index}`} className="bg-gray-700 rounded-lg p-4">
-                                            <div className="flex items-center justify-between mb-2">
-                                                <h4 className="text-white font-medium">
-                                                    {post.title || 'Untitled Post'}
-                                                </h4>
-                                                <span className="text-sm text-gray-400 flex items-center">
-                                                    <Calendar className="w-4 h-4 mr-1" />
-                                                    {formatDate(post.date_uploaded)}
-                                                </span>
-                                            </div>
-                                            <p className="text-gray-300 text-sm mb-3 line-clamp-2">
-                                                {post.description || 'No description'}
-                                            </p>
-                                            <div className="flex items-center space-x-6">
-                                                <div className="flex items-center text-red-400">
-                                                    <Heart className="w-4 h-4 mr-1" />
-                                                    <span className="text-sm font-medium">{formatNumber(post.likes || 0)}</span>
-                                                </div>
-                                                <div className="flex items-center text-blue-400">
-                                                    <Eye className="w-4 h-4 mr-1" />
-                                                    <span className="text-sm font-medium">{formatNumber(post.views || 0)}</span>
-                                                </div>
-                                                <div className="flex items-center text-green-400">
-                                                    <MessageCircle className="w-4 h-4 mr-1" />
-                                                    <span className="text-sm font-medium">{formatNumber(post.comments || 0)}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="text-center py-8">
-                                    <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                                    <h3 className="text-xl font-semibold text-white mb-2">No Posts Yet</h3>
-                                    <p className="text-gray-400">
-                                        Upload your first Instagram link to start tracking your performance!
+                    {/* Position Display */}
+                    {metrics && (
+                        <div className="bg-gradient-to-r from-yellow-600 to-orange-600 mx-4 mt-4 rounded-lg p-4">
+                            <div className="flex items-center justify-center space-x-3">
+                                <Trophy className="w-6 h-6 text-white" />
+                                <div className="text-center">
+                                    <p className="text-white font-bold text-lg">
+                                        #{metrics.position} of {metrics.totalUsers} users
+                                    </p>
+                                    <p className="text-yellow-100 text-sm">
+                                        Ranked by total views
                                     </p>
                                 </div>
-                            )}
-                        </div>
-                    </>
-                ) : (
-                    /* No Data State */
-                    <div className="text-center py-12">
-                        <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold text-white mb-2">No Data Available</h3>
-                        <p className="text-gray-400 mb-6">
-                            Upload your first Instagram link to start tracking your performance!
-                        </p>
-                        <button
-                            onClick={handleAddSampleData}
-                            disabled={addingSampleData}
-                            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center mx-auto"
-                        >
-                            {addingSampleData ? (
-                                <>
-                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                                    Adding Sample Data...
-                                </>
-                            ) : (
-                                <>
-                                    <Plus className="w-4 h-4 mr-2" />
-                                    Add Sample Data for Testing
-                                </>
-                            )}
-                        </button>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-gray-400 text-sm font-medium">Total Posts</p>
-                                        <p className="text-2xl font-bold text-white">0</p>
-                                    </div>
-                                    <BarChart3 className="w-8 h-8 text-blue-400" />
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-gray-400 text-sm font-medium">Total Likes</p>
-                                        <p className="text-2xl font-bold text-red-400">0</p>
-                                    </div>
-                                    <Heart className="w-8 h-8 text-red-400" />
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-gray-400 text-sm font-medium">Total Views</p>
-                                        <p className="text-2xl font-bold text-blue-400">0</p>
-                                    </div>
-                                    <Eye className="w-8 h-8 text-blue-400" />
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-800 rounded-lg p-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-gray-400 text-sm font-medium">Total Comments</p>
-                                        <p className="text-2xl font-bold text-green-400">0</p>
-                                    </div>
-                                    <MessageCircle className="w-8 h-8 text-green-400" />
-                                </div>
                             </div>
                         </div>
+                    )}
+
+                    {/* Main Content */}
+                    <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                        {metrics ? (
+                            <>
+                                {/* Overview Cards - Calculated from Google Sheets */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-gray-400 text-sm font-medium">Total Posts</p>
+                                                <p className="text-2xl font-bold text-white">{metrics.totalPosts}</p>
+                                                <p className="text-xs text-gray-500 mt-1">From Google Sheets</p>
+                                            </div>
+                                            <BarChart3 className="w-8 h-8 text-blue-400" />
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-gray-400 text-sm font-medium">Total Likes</p>
+                                                <p className="text-2xl font-bold text-red-400">{formatNumber(metrics.totalLikes)}</p>
+                                                <p className="text-xs text-gray-500 mt-1">Calculated from sheets</p>
+                                            </div>
+                                            <Heart className="w-8 h-8 text-red-400" />
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-gray-400 text-sm font-medium">Total Views</p>
+                                                <p className="text-2xl font-bold text-blue-400">{formatNumber(metrics.totalViews)}</p>
+                                                <p className="text-xs text-gray-500 mt-1">Sum of all views</p>
+                                            </div>
+                                            <Eye className="w-8 h-8 text-blue-400" />
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-gray-400 text-sm font-medium">Total Comments</p>
+                                                <p className="text-2xl font-bold text-green-400">{formatNumber(metrics.totalComments)}</p>
+                                                <p className="text-xs text-gray-500 mt-1">Sum of all comments</p>
+                                            </div>
+                                            <MessageCircle className="w-8 h-8 text-green-400" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Average Performance */}
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h3 className="text-lg font-semibold text-white">Average Likes</h3>
+                                            <TrendingUp className="w-5 h-5 text-red-400" />
+                                        </div>
+                                        <p className="text-3xl font-bold text-red-400">{formatNumber(metrics.averageLikes)}</p>
+                                        <p className="text-sm text-gray-400 mt-2">per post</p>
+                                    </div>
+
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h3 className="text-lg font-semibold text-white">Average Views</h3>
+                                            <TrendingUp className="w-5 h-5 text-blue-400" />
+                                        </div>
+                                        <p className="text-3xl font-bold text-blue-400">{formatNumber(metrics.averageViews)}</p>
+                                        <p className="text-sm text-gray-400 mt-2">per post</p>
+                                    </div>
+
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h3 className="text-lg font-semibold text-white">Average Comments</h3>
+                                            <TrendingUp className="w-5 h-5 text-green-400" />
+                                        </div>
+                                        <p className="text-3xl font-bold text-green-400">{formatNumber(metrics.averageComments)}</p>
+                                        <p className="text-sm text-gray-400 mt-2">per post</p>
+                                    </div>
+                                </div>
+
+                                {/* Recent Posts */}
+                                <div className="bg-gray-800 rounded-lg p-6">
+                                    <h3 className="text-xl font-semibold text-white mb-6">Recent Posts</h3>
+
+                                    {metrics.recentPosts.length > 0 ? (
+                                        <div className="space-y-4">
+                                            {metrics.recentPosts.map((post, index) => (
+                                                <div key={`${post.user_id}-${index}`} className="bg-gray-700 rounded-lg p-4">
+                                                    <div className="flex items-center justify-between mb-2">
+                                                        <h4 className="text-white font-medium">
+                                                            {post.title || 'Untitled Post'}
+                                                        </h4>
+                                                        <span className="text-sm text-gray-400 flex items-center">
+                                                            <Calendar className="w-4 h-4 mr-1" />
+                                                            {formatDate(post.date_uploaded)}
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-gray-300 text-sm mb-3 line-clamp-2">
+                                                        {post.description || 'No description'}
+                                                    </p>
+                                                    <div className="flex items-center space-x-6">
+                                                        <div className="flex items-center text-red-400">
+                                                            <Heart className="w-4 h-4 mr-1" />
+                                                            <span className="text-sm font-medium">{formatNumber(post.likes || 0)}</span>
+                                                        </div>
+                                                        <div className="flex items-center text-blue-400">
+                                                            <Eye className="w-4 h-4 mr-1" />
+                                                            <span className="text-sm font-medium">{formatNumber(post.views || 0)}</span>
+                                                        </div>
+                                                        <div className="flex items-center text-green-400">
+                                                            <MessageCircle className="w-4 h-4 mr-1" />
+                                                            <span className="text-sm font-medium">{formatNumber(post.comments || 0)}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center py-8">
+                                            <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                                            <h3 className="text-xl font-semibold text-white mb-2">No Posts Yet</h3>
+                                            <p className="text-gray-400">
+                                                Upload your first Instagram link to start tracking your performance!
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        ) : (
+                            /* No Data State */
+                            <div className="text-center py-12">
+                                <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                                <h3 className="text-xl font-semibold text-white mb-2">No Data Available</h3>
+                                <p className="text-gray-400 mb-6">
+                                    Upload your first Instagram link to start tracking your performance!
+                                </p>
+                                <button
+                                    onClick={handleAddSampleData}
+                                    disabled={addingSampleData}
+                                    className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center mx-auto"
+                                >
+                                    {addingSampleData ? (
+                                        <>
+                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                            Adding Sample Data...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Plus className="w-4 h-4 mr-2" />
+                                            Add Sample Data for Testing
+                                        </>
+                                    )}
+                                </button>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-gray-400 text-sm font-medium">Total Posts</p>
+                                                <p className="text-2xl font-bold text-white">0</p>
+                                            </div>
+                                            <BarChart3 className="w-8 h-8 text-blue-400" />
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-gray-400 text-sm font-medium">Total Likes</p>
+                                                <p className="text-2xl font-bold text-red-400">0</p>
+                                            </div>
+                                            <Heart className="w-8 h-8 text-red-400" />
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-gray-400 text-sm font-medium">Total Views</p>
+                                                <p className="text-2xl font-bold text-blue-400">0</p>
+                                            </div>
+                                            <Eye className="w-8 h-8 text-blue-400" />
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gray-800 rounded-lg p-6">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-gray-400 text-sm font-medium">Total Comments</p>
+                                                <p className="text-2xl font-bold text-green-400">0</p>
+                                            </div>
+                                            <MessageCircle className="w-8 h-8 text-green-400" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
+
+                </>
+            )}
+
+            {/* Hamburger Menu */}
+            <HamburgerMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         </div>
     );
 };
