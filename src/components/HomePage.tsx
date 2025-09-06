@@ -139,17 +139,17 @@ const HomePage: React.FC = () => {
             </button>
 
             {/* Header with Gmail Display */}
-            <header className="bg-gray-900 shadow-sm border-b border-gray-800">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-end items-center h-16">
+            <header className="bg-gray-900 shadow-lg border-b border-gray-800">
+                <div className="max-w-[95vw] mx-auto px-6 sm:px-8 lg:px-12">
+                    <div className="flex justify-end items-center h-20">
                         {/* Gmail Display */}
-                        <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                                <span className="text-white text-sm font-medium">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-lg font-medium">
                                     {currentUser?.email?.charAt(0).toUpperCase() || 'U'}
                                 </span>
                             </div>
-                            <span className="text-gray-300 font-medium">
+                            <span className="text-gray-300 font-medium text-lg">
                                 {currentUser?.email || 'user@gmail.com'}
                             </span>
                         </div>
@@ -158,43 +158,43 @@ const HomePage: React.FC = () => {
             </header>
 
             {/* Main Content - Upload Form, Scoreboard, and Top 5 Reels */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div className="max-w-[95vw] mx-auto px-6 sm:px-8 lg:px-12 py-12">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                     {/* Upload Form - Left Side */}
-                    <div className="lg:col-span-1">
-                        <div className="bg-gray-800 rounded-lg p-6 sticky top-8">
-                            <div className="flex items-center justify-center mb-6">
-                                <div className="bg-blue-600 p-3 rounded-full">
-                                    <Upload className="h-6 w-6 text-white" />
+                    <div className="lg:col-span-3 xl:col-span-3">
+                        <div className="bg-gray-800 rounded-lg p-8 sticky top-8">
+                            <div className="flex items-center justify-center mb-8">
+                                <div className="bg-blue-600 p-4 rounded-full">
+                                    <Upload className="h-8 w-8 text-white" />
                                 </div>
-                                <h3 className="text-xl font-semibold text-white ml-4">
+                                <h3 className="text-2xl font-semibold text-white ml-4">
                                     Upload Link
                                 </h3>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="space-y-4" role="form">
-                                <div className="space-y-4">
+                            <form onSubmit={handleSubmit} className="space-y-6" role="form">
+                                <div className="space-y-6">
                                     {/* Link URL Input */}
                                     <div className="relative">
-                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <LinkIcon className="h-5 w-5 text-gray-400" />
+                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <LinkIcon className="h-6 w-6 text-gray-400" />
                                         </div>
                                         <input
                                             type="url"
                                             value={link}
                                             onChange={(e) => setLink(e.target.value)}
                                             placeholder="Paste your Instagram link here..."
-                                            className="w-full pl-10 pr-12 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full pl-12 pr-14 py-4 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
                                             disabled={isUploading}
                                         />
                                         {link && (
                                             <button
                                                 type="button"
                                                 onClick={handleClear}
-                                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white"
+                                                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white"
                                                 disabled={isUploading}
                                             >
-                                                <X className="h-5 w-5" />
+                                                <X className="h-6 w-6" />
                                             </button>
                                         )}
                                     </div>
@@ -205,7 +205,7 @@ const HomePage: React.FC = () => {
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
                                         placeholder="Title (optional)"
-                                        className="w-full py-3 px-4 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full py-4 px-4 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
                                         disabled={isUploading}
                                     />
                                 </div>
@@ -214,16 +214,16 @@ const HomePage: React.FC = () => {
                                     <button
                                         type="submit"
                                         disabled={isUploading || !link.trim()}
-                                        className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                                        className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium py-4 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center text-lg"
                                     >
                                         {isUploading ? (
                                             <>
-                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
                                                 Uploading...
                                             </>
                                         ) : (
                                             <>
-                                                <Upload className="h-4 w-4 mr-2" />
+                                                <Upload className="h-5 w-5 mr-3" />
                                                 Upload Link
                                             </>
                                         )}
@@ -245,8 +245,8 @@ const HomePage: React.FC = () => {
                                 )}
                             </form>
 
-                            <div className="mt-4 text-center">
-                                <p className="text-sm text-gray-400">
+                            <div className="mt-6 text-center">
+                                <p className="text-base text-gray-400">
                                     Supported: Instagram posts, reels, stories, and profile links
                                 </p>
                             </div>
@@ -254,46 +254,46 @@ const HomePage: React.FC = () => {
                     </div>
 
                     {/* Scoreboard - Middle */}
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-6 xl:col-span-6">
                         <Scoreboard />
                     </div>
 
                     {/* Top 5 Reels - Right Side */}
-                    <div className="lg:col-span-1">
-                        <div className="bg-gray-800 rounded-lg p-6 sticky top-8">
-                            <div className="flex items-center justify-center mb-6">
-                                <div className="bg-yellow-600 p-3 rounded-full">
-                                    <Eye className="h-6 w-6 text-white" />
+                    <div className="lg:col-span-3 xl:col-span-3">
+                        <div className="bg-gray-800 rounded-lg p-8 sticky top-8">
+                            <div className="flex items-center justify-center mb-8">
+                                <div className="bg-yellow-600 p-4 rounded-full">
+                                    <Eye className="h-8 w-8 text-white" />
                                 </div>
-                                <h3 className="text-xl font-semibold text-white ml-4">
+                                <h3 className="text-2xl font-semibold text-white ml-4">
                                     Top 5 Reels
                                 </h3>
                             </div>
 
                             {loadingReels ? (
-                                <div className="flex justify-center py-8">
-                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+                                <div className="flex justify-center py-12">
+                                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
                                 </div>
                             ) : topReels.length > 0 ? (
-                                <div className="grid grid-cols-1 gap-3">
+                                <div className="grid grid-cols-1 gap-4">
                                     {topReels.map((reel, index) => (
-                                        <div key={index} className="bg-gray-700 rounded-lg p-3 hover:bg-gray-600 transition-colors">
-                                            <div className="flex items-center space-x-3">
-                                                <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center relative overflow-hidden flex-shrink-0">
+                                        <div key={index} className="bg-gray-700 rounded-lg p-5 hover:bg-gray-600 transition-colors">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center relative overflow-hidden flex-shrink-0">
                                                     <div className="text-center text-white">
-                                                        <div className="text-sm font-bold">#{index + 1}</div>
+                                                        <div className="text-lg font-bold">#{index + 1}</div>
                                                     </div>
                                                     <div className="absolute top-1 right-1 bg-black/50 rounded-full p-1">
-                                                        <ExternalLink className="h-2 w-2 text-white" />
+                                                        <ExternalLink className="h-3 w-3 text-white" />
                                                     </div>
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h4 className="text-white font-medium text-sm truncate">
+                                                    <h4 className="text-white font-medium text-base truncate">
                                                         {reel.title || 'Untitled Post'}
                                                     </h4>
-                                                    <div className="flex items-center justify-between text-xs text-gray-400 mt-1">
+                                                    <div className="flex items-center justify-between text-sm text-gray-400 mt-2">
                                                         <span className="flex items-center">
-                                                            <Eye className="h-3 w-3 mr-1" />
+                                                            <Eye className="h-4 w-4 mr-2" />
                                                             {formatNumber(reel.views)}
                                                         </span>
                                                         <span className="text-yellow-400 font-medium">
@@ -304,7 +304,7 @@ const HomePage: React.FC = () => {
                                                         href={reel.url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="inline-block mt-2 bg-blue-600 hover:bg-blue-700 text-white text-center py-1 px-3 rounded text-xs font-medium transition-colors"
+                                                        className="inline-block mt-3 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-4 rounded text-sm font-medium transition-colors"
                                                     >
                                                         View Reel
                                                     </a>
@@ -314,8 +314,8 @@ const HomePage: React.FC = () => {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="text-center py-8">
-                                    <p className="text-gray-400 text-sm">No reels available yet</p>
+                                <div className="text-center py-12">
+                                    <p className="text-gray-400 text-base">No reels available yet</p>
                                 </div>
                             )}
                         </div>

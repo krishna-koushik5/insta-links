@@ -128,159 +128,157 @@ const Scoreboard: React.FC = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-black text-white flex items-center justify-center">
-                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+            <div className="bg-gray-800 rounded-lg p-8 flex items-center justify-center min-h-[400px]">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500"></div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="bg-gray-800 rounded-lg p-8">
             {/* Header */}
-            <div className="bg-gray-900 border-b border-gray-800">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-6">
-                        <div>
-                            <h1 className="text-3xl font-bold text-white">Scoreboard</h1>
-                            <p className="text-gray-300 mt-2">See how everyone is performing</p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                                <span className="text-white text-sm font-medium">
-                                    {currentUser?.email?.charAt(0).toUpperCase() || 'U'}
-                                </span>
-                            </div>
-                            <span className="text-gray-300 font-medium">
-                                {currentUser?.email || 'user@gmail.com'}
+            <div className="mb-8">
+                <div className="flex justify-between items-center">
+                    <div>
+                        <h1 className="text-3xl font-bold text-white">Scoreboard</h1>
+                        <p className="text-gray-300 mt-2">See how everyone is performing</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                            <span className="text-white text-lg font-medium">
+                                {currentUser?.email?.charAt(0).toUpperCase() || 'U'}
                             </span>
                         </div>
+                        <span className="text-gray-300 font-medium text-lg">
+                            {currentUser?.email || 'user@gmail.com'}
+                        </span>
                     </div>
                 </div>
             </div>
 
             {/* Sort Controls */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="mb-8">
                 <div className="flex space-x-4 mb-6">
                     <button
                         onClick={() => setSortBy('views')}
-                        className={`px-4 py-2 rounded-lg font-medium transition-colors ${sortBy === 'views'
+                        className={`px-6 py-3 rounded-lg font-medium transition-colors text-lg ${sortBy === 'views'
                             ? 'bg-blue-600 text-white'
                             : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
                     >
-                        <Eye className="w-4 h-4 mr-2 inline" />
+                        <Eye className="w-5 h-5 mr-2 inline" />
                         Views
                     </button>
                     <button
                         onClick={() => setSortBy('likes')}
-                        className={`px-4 py-2 rounded-lg font-medium transition-colors ${sortBy === 'likes'
+                        className={`px-6 py-3 rounded-lg font-medium transition-colors text-lg ${sortBy === 'likes'
                             ? 'bg-red-600 text-white'
                             : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
                     >
-                        <Trophy className="w-4 h-4 mr-2 inline" />
+                        <Trophy className="w-5 h-5 mr-2 inline" />
                         Likes
                     </button>
                     <button
                         onClick={() => setSortBy('comments')}
-                        className={`px-4 py-2 rounded-lg font-medium transition-colors ${sortBy === 'comments'
+                        className={`px-6 py-3 rounded-lg font-medium transition-colors text-lg ${sortBy === 'comments'
                             ? 'bg-green-600 text-white'
                             : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
                     >
-                        <Trophy className="w-4 h-4 mr-2 inline" />
+                        <Trophy className="w-5 h-5 mr-2 inline" />
                         Comments
                     </button>
                     <button
                         onClick={() => setSortBy('posts')}
-                        className={`px-4 py-2 rounded-lg font-medium transition-colors ${sortBy === 'posts'
+                        className={`px-6 py-3 rounded-lg font-medium transition-colors text-lg ${sortBy === 'posts'
                             ? 'bg-purple-600 text-white'
                             : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
                     >
-                        <Trophy className="w-4 h-4 mr-2 inline" />
+                        <Trophy className="w-5 h-5 mr-2 inline" />
                         Posts
                     </button>
                 </div>
 
                 {/* Scoreboard Table */}
-                <div className="bg-gray-800 rounded-lg overflow-hidden">
+                <div className="bg-gray-700 rounded-lg overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full">
-                            <thead className="bg-gray-700">
+                            <thead className="bg-gray-600">
                                 <tr>
-                                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">Rank</th>
-                                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">User</th>
-                                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-300">
+                                    <th className="px-8 py-6 text-left text-lg font-medium text-gray-300">Rank</th>
+                                    <th className="px-8 py-6 text-left text-lg font-medium text-gray-300">User</th>
+                                    <th className="px-8 py-6 text-center text-lg font-medium text-gray-300">
                                         <div className="flex items-center justify-center">
-                                            <Eye className="w-4 h-4 mr-2 text-blue-400" />
+                                            <Eye className="w-5 h-5 mr-2 text-blue-400" />
                                             Views
                                         </div>
                                     </th>
-                                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-300">
+                                    <th className="px-8 py-6 text-center text-lg font-medium text-gray-300">
                                         <div className="flex items-center justify-center">
-                                            <Trophy className="w-4 h-4 mr-2 text-red-400" />
+                                            <Trophy className="w-5 h-5 mr-2 text-red-400" />
                                             Likes
                                         </div>
                                     </th>
-                                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-300">
+                                    <th className="px-8 py-6 text-center text-lg font-medium text-gray-300">
                                         <div className="flex items-center justify-center">
-                                            <Trophy className="w-4 h-4 mr-2 text-green-400" />
+                                            <Trophy className="w-5 h-5 mr-2 text-green-400" />
                                             Comments
                                         </div>
                                     </th>
-                                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-300">
+                                    <th className="px-8 py-6 text-center text-lg font-medium text-gray-300">
                                         <div className="flex items-center justify-center">
-                                            <Trophy className="w-4 h-4 mr-2 text-purple-400" />
+                                            <Trophy className="w-5 h-5 mr-2 text-purple-400" />
                                             Posts
                                         </div>
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-700">
+                            <tbody className="divide-y divide-gray-600">
                                 {getSortedUsers().map((user, index) => (
                                     <tr
                                         key={user.id}
-                                        className={`hover:bg-gray-700 transition-colors ${user.id === currentUser?.uid ? 'bg-blue-900/20' : ''
+                                        className={`hover:bg-gray-600 transition-colors ${user.id === currentUser?.uid ? 'bg-blue-900/20' : ''
                                             }`}
                                     >
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-8 py-6 whitespace-nowrap">
                                             <div className="flex items-center">
                                                 {getRankIcon(index)}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-8 py-6 whitespace-nowrap">
                                             <div className="flex items-center">
-                                                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mr-3">
-                                                    <span className="text-white font-bold">
+                                                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mr-4">
+                                                    <span className="text-white font-bold text-lg">
                                                         {user.display_name?.charAt(0) || user.email.charAt(0).toUpperCase()}
                                                     </span>
                                                 </div>
                                                 <div>
-                                                    <div className="text-sm font-medium text-white">
+                                                    <div className="text-lg font-medium text-white">
                                                         {user.display_name || user.email.split('@')[0]}
                                                     </div>
-                                                    <div className="text-sm text-gray-400">{user.email}</div>
+                                                    <div className="text-base text-gray-400">{user.email}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-center">
-                                            <span className="text-xl font-bold text-blue-400">
+                                        <td className="px-8 py-6 whitespace-nowrap text-center">
+                                            <span className="text-2xl font-bold text-blue-400">
                                                 {formatNumber(user.totalViews)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-center">
-                                            <span className="text-xl font-bold text-red-400">
+                                        <td className="px-8 py-6 whitespace-nowrap text-center">
+                                            <span className="text-2xl font-bold text-red-400">
                                                 {formatNumber(user.totalLikes)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-center">
-                                            <span className="text-xl font-bold text-green-400">
+                                        <td className="px-8 py-6 whitespace-nowrap text-center">
+                                            <span className="text-2xl font-bold text-green-400">
                                                 {formatNumber(user.totalComments)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-center">
-                                            <span className="text-xl font-bold text-purple-400">
+                                        <td className="px-8 py-6 whitespace-nowrap text-center">
+                                            <span className="text-2xl font-bold text-purple-400">
                                                 {user.totalPosts}
                                             </span>
                                         </td>
@@ -293,10 +291,10 @@ const Scoreboard: React.FC = () => {
 
                 {/* Empty State */}
                 {users.length === 0 && (
-                    <div className="text-center py-12">
-                        <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold text-white mb-2">No Users Yet</h3>
-                        <p className="text-gray-400">
+                    <div className="text-center py-16">
+                        <Trophy className="w-20 h-20 text-gray-400 mx-auto mb-6" />
+                        <h3 className="text-2xl font-semibold text-white mb-4">No Users Yet</h3>
+                        <p className="text-gray-400 text-lg">
                             Be the first to upload an Instagram link and start competing!
                         </p>
                     </div>
